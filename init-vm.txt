@@ -43,10 +43,11 @@ runcmd:
     - cd '/home/mschw90/'
     - npm init -y
     - npm install express --save
-    - node server.js
     - mkfs -t ext4 /dev/sdc
     - mkdir /media/disk
     - mount /dev/sdc /media/disk/
     - chown -R mschw90:mschw90 /media/disk
     - chmod -R 766 /media/disk
     - mv server.js /media/disk
+    - mv unmount.sh /media/disk
+    - node server.js

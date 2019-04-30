@@ -6,6 +6,7 @@ snapShot()
     groupName=$2
     vmName=$3
     snapName=$4
+    newDiskName=$5
 
     az vm disk detach \
         -n $diskName \
@@ -27,7 +28,17 @@ snapShot()
     mount /dev/sdc /media/disk/
     chown -R mschw90:mschw90 /media/disk
     chmod -R 766 /media/disk
+
+    exit
+
+    az disk create \
+        -n $newDiskName \
+        -g $groupName \
+        --os-type Linux \
+        --size 10
+        --source $snapName
 }
+
 
 image()
 {

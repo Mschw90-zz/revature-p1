@@ -8,7 +8,6 @@ fi
 groupName=$1
 location=$2
 VMname=$3
-typeOfImage=$4
 size=$5
 diskName=$6
 
@@ -28,7 +27,7 @@ fi
 az vm create 
     -n $VMname \
     -g $groupName \
-    --image $typeOfImage \
+    --image UbuntuLTS \
     --size $size \
     --generate-ssh-keys \
     --admin-username mschw90
@@ -40,4 +39,3 @@ az vm open-port \
     -n $VMname \
     --port 8080 \
     --priority 800
-
