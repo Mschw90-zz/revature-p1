@@ -7,20 +7,6 @@ packages:
     - git
     - nodejs
 write_files:
-     - owner: 'mschw90:mschw90'
-      path: '/home/mschw90/unmount.sh'
-      content: |
-        #!/bin/bash
-        image()
-        {
-            umount /media/disk
-            waagent -deprovision+user -force
-
-            exit
-        }
-        command=$1
-        $command
-
     - owner: 'mschw90:mschw90'
       path: '/home/mschw90/server.js'
       content: |
