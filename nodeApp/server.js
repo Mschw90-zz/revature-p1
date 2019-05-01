@@ -7,7 +7,6 @@ const fs = require('fs')
 const path = require('path')
 const dirPath = path.join(__dirname, "/uploads")
 
-
 app.post('/profile', upload.single('avatar'), function (req, res) {
     res.redirect("/")
 })
