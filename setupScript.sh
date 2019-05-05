@@ -26,10 +26,7 @@ blobStorageAccountKey=$(az storage account keys list -g $groupName \
 -n $storageAccountName --query [0].value --output tsv)
 
 az storage container create -n images --account-name $storageAccountName \
---account-key $blobStorageAccountKey --public-access off
-
-echo "Make a note of your Blob storage account key..."
-echo $blobStorageAccountKey
+--account-key $blobStorageAccountKey --public-access container
 
 
 # Create a SQL API Cosmos DB account with session consistency and multi-master enabled
