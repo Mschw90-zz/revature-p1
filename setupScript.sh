@@ -28,29 +28,9 @@ blobStorageAccountKey=$(az storage account keys list -g $groupName \
 az storage container create -n images --account-name $storageAccountName \
 --account-key $blobStorageAccountKey --public-access off
 
-az storage container create -n thumbnails --account-name $storageAccountName \
---account-key $blobStorageAccountKey --public-access container
-
 echo "Make a note of your Blob storage account key..."
 echo $blobStorageAccountKey
 
-
-# Create an App Service plan in `FREE` tier.
-az appservice plan create --name $servicePlanName --resource-group $groupName --sku B1 --location $location --is-linux
-
-# Create a web app.
-az webapp create --resource-group $groupName --plan $servicePlanName --name $appName -r "node|10.14"
-
-az webapp config appsettings set -g $groupName -n $appName --settings AZURE_STORAGE_ACCOUNT_NAME=$appName
-az webapp config appsettings set -g $groupName -n $appName --settings AZURE_STORAGE_ACCOUNT_ACCESS_KEY=$blobStorageAccountKey
-
-# Configure continuous deployment from GitHub. 
-# --git-token parameter is required only once per Azure account (Azure remembers token).
-az webapp deployment source config --name $appName --resource-group $groupName \
---repo-url $gitrepo --branch master --git-token $token
-
-# add instances 
-az appservice plan update -g $groupName -n $servicePlanName --number-of-workers 3
 
 # Create a SQL API Cosmos DB account with session consistency and multi-master enabled
 az cosmosdb create \
@@ -77,3 +57,25 @@ az cosmosdb collection create \
     --db-name $cosmosDatabaseName \
     --partition-key-path /mypartitionkey \
     --throughput 1000
+
+primaryKey=$(az cosmosdb list-keys --name willdb218 -g wjgroup218 --query primaryMasterKey -o tsv)
+
+az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_URI=https://${cosmosName}.documents.azure.com:443/
+az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_PRIMARY_KEY=$primaryKey
+
+# Create an App Service plan in `FREE` tier.
+az appservice plan create --name $servicePlanName --resource-group $groupName --sku B1 --location $location --is-linux
+
+# Create a web app.
+az webapp create --resource-group $groupName --plan $servicePlanName --name $appName -r "node|10.14"
+
+az webapp config appsettings set -g $groupName -n $appName --settings AZURE_STORAGE_ACCOUNT_NAME=$appName
+az webapp config appsettings set -g $groupName -n $appName --settings AZURE_STORAGE_ACCOUNT_ACCESS_KEY=$blobStorageAccountKey
+
+# Configure continuous deployment from GitHub. 
+# --git-token parameter is required only once per Azure account (Azure remembers token).
+az webapp deployment source config --name $appName --resource-group $groupName \
+--repo-url $gitrepo --branch master --git-token $token
+
+# add instances 
+az appservice plan update -g $groupName -n $servicePlanName --number-of-workers 3
