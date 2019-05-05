@@ -63,7 +63,7 @@ primaryKey=$(az cosmosdb list-keys --name willdb218 -g wjgroup218 --query primar
 az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_URI=https://${cosmosName}.documents.azure.com:443/
 az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_PRIMARY_KEY=$primaryKey
 
-# Create an App Service plan in `FREE` tier.
+# Create an App Service 
 az appservice plan create --name $servicePlanName --resource-group $groupName --sku B1 --location $location --is-linux
 
 # Create a web app.
