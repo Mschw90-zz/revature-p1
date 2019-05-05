@@ -9,7 +9,7 @@ gitrepo=https://github.com/Mschw90/nodeApp.git
 token=c1aab337d013568882b4d8d058377f3da994b466
 cosmosName=$5
 cosmosDatabaseName=$6
-# cosmosContainerName=$7
+cosmosContainerName=$7
 
 # Create a resource group.
 az group create --location $location --name $groupName
@@ -70,10 +70,10 @@ az cosmosdb database create \
 
 
 # Create a SQL API container with a partition key and 1000 RU/s
-# az cosmosdb collection create \
-#     --resource-group $groupName \
-#     --collection-name $cosmosContainerName \
-#     --name $cosmosName \
-#     --db-name $cosmosDatabaseName \
-#     --partition-key-path /mypartitionkey \
-#     --throughput 1000
+az cosmosdb collection create \
+    --resource-group $groupName \
+    --collection-name $cosmosContainerName \
+    --name $cosmosName \
+    --db-name $cosmosDatabaseName \
+    --partition-key-path /mypartitionkey \
+    --throughput 1000
