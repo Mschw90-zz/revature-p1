@@ -49,16 +49,13 @@ az cosmosdb database create \
 # Create a SQL API container with a partition key and 1000 RU/s
 az cosmosdb collection create \
     --resource-group $groupName \
-    --collection-name $cosmosContainerName \
+    --collection-name image \
     --name $cosmosName \
     --db-name $cosmosDatabaseName \
     --partition-key-path /mypartitionkey \
     --throughput 1000
 
-primaryKey=$(az cosmosdb list-keys --name willdb218 -g wjgroup218 --query primaryMasterKey -o tsv)
-
-az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_URI=https://${cosmosName}.documents.azure.com:443/
-az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_PRIMARY_KEY=$primaryKey
+primaryKey=$(az cosmosdb list-keys --name $cosmosName -g $groupName --query primaryMasterKey -o tsv)
 
 # Create an App Service 
 az appservice plan create --name $servicePlanName --resource-group $groupName --sku B1 --location $location --is-linux
@@ -66,6 +63,8 @@ az appservice plan create --name $servicePlanName --resource-group $groupName --
 # Create a web app.
 az webapp create --resource-group $groupName --plan $servicePlanName --name $appName -r "node|10.14"
 
+az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_URI=https://${cosmosName}.documents.azure.com:443/
+az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_PRIMARY_KEY=$primaryKey
 az webapp config appsettings set -g $groupName -n $appName --settings AZURE_STORAGE_ACCOUNT_NAME=$appName
 az webapp config appsettings set -g $groupName -n $appName --settings AZURE_STORAGE_ACCOUNT_ACCESS_KEY=$blobStorageAccountKey
 
