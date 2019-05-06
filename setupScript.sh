@@ -5,11 +5,17 @@ storageAccountName=$2
 location=southcentralus
 servicePlanName=$3
 appName=$4
-gitrepo=https://github.com/Mschw90/nodeApp.git
-token=c1aab337d013568882b4d8d058377f3da994b466
 cosmosName=$5
 cosmosDatabaseName=$6
 cosmosContainerName=$7
+gitrepo=$8
+token=c1aab337d013568882b4d8d058377f3da994b466
+
+# checks to see if az is currently installed
+if [ -z "$(which az)" ]; then
+    echo "azure does not exist"
+    exit 1
+fi
 
 # Create a resource group.
 az group create --location $location --name $groupName
