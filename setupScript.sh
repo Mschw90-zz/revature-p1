@@ -65,7 +65,7 @@ az webapp create --resource-group $groupName --plan $servicePlanName --name $app
 
 az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_URI=https://${cosmosName}.documents.azure.com:443/
 az webapp config appsettings set -g $groupName -n $appName --settings AZURE_COSMOS_PRIMARY_KEY=$primaryKey
-az webapp config appsettings set -g $groupName -n $appName --settings AZURE_STORAGE_ACCOUNT_NAME=$appName
+az webapp config appsettings set -g $groupName -n $appName --settings AZURE_STORAGE_ACCOUNT_NAME=$storageAccountName
 az webapp config appsettings set -g $groupName -n $appName --settings AZURE_STORAGE_ACCOUNT_ACCESS_KEY=$blobStorageAccountKey
 
 # Configure continuous deployment from GitHub. 
